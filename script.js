@@ -129,9 +129,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Event listeners for form submission and new player button
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", function(event) {
+        event.preventDefault(); // prevent page reload
 
-    })
+    const usernameInput = document.getElementById("username");
+    const enteredName = usernameInput.value.trim();
+
+    // If the user typed a name and cookie doesn't exist,save cookie
+    if (enteredName !== "" && !getCookie("username")) {
+        setCookie("username", enteredName, 7);
+    }
+
+    // If cookie exists, hide input again
+    checkUsername();
+
+    // score calculation
+    // save score 
+
+    displayQuestions();
+
+});
+
+    
 
     newPlayerButton.addEventListener("click", (event) => {
 
