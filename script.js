@@ -22,9 +22,25 @@ document.addEventListener("DOMContentLoaded", () => {
             ?.split("=")[1];
     }
 
+    // Checks if a username cookie exists and updates the UI accordingly
+    function checkUsername() {
+        const savedName = getCookie("username");
+        const usernameInput = document.getElementById("username");
+        const newPlayerButton = document.getElementById("new-player");
+
+        if (savedName) {
+            // Hide the username input and show the new player button
+            usernameInput.classList.add("hidden");
+            newPlayerButton.classList.remove("hidden");
+        } else {
+            // Show the username field and hide the new player button
+            usernameInput.classList.remove("hidden");
+            newPlayerButton.classList.add("hidden");
+        }
+    }
 
     // Initialize the game
-    // checkUsername(); Uncomment once completed
+    checkUsername(); 
     displayQuestions();
     // displayScores();
 
