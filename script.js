@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Initialize the game
     checkUsername(); 
     displayQuestions();
-    // displayScores();
+    displayScores();
 
     /**
      * Fetches trivia questions from the API and displays them.
@@ -128,9 +128,63 @@ document.addEventListener("DOMContentLoaded", () => {
             .join("");
     }
 
+    // Calculate the user's score based on their answers
+    function calculateScore() {
+    let score = 0;
+
+    for (let i = 0; i < 10; i++) {
+        const selected = document.querySelector(`input[name="answer${i}"]:checked`);
+
+        if (selected && selected.dataset.correct === "true") {
+            score++;
+        }
+    }
+
+    return score;
+}
+
+// Saves the user's score 
+    function saveScore(score) {
+        const username = getCookie("username");
+
+        if (!username) return; // safety check
+
+        // Get existing scores or create an empty array
+        let scores = JSON.parse(localStorage.getItem("scores")) || [];
+
+        // Add new score
+        scores.push({
+            name: username,
+            score: score
+        });
+
+        // Save back to localStorage
+        localStorage.setItem("scores", JSON.stringify(scores));
+}
+
+// Display the list of scores
+
+    function displayScores() {
+        const tableBody = document.querySelector("#score-table tbody");
+
+        tableBody.innerHTML = "";
+
+        let scores = JSON.parse(localStorage.getItem("scores")) || [];
+
+        scores.forEach(entry => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${entry.name}</td>
+                <td>${entry.score}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+
     // Event listeners for form submission and new player button
     form.addEventListener("submit", function(event) {
-        event.preventDefault(); // prevent page reload
+        event.preventDefault(); 
 
     const usernameInput = document.getElementById("username");
     const enteredName = usernameInput.value.trim();
@@ -143,14 +197,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // If cookie exists, hide input again
     checkUsername();
 
-    // score calculation
-    // save score 
+    // score calculation   
+    const score = calculateScore();
+    console.log("Score:", score);
 
+    // save score
+    saveScore(score);
+
+    // display updated scores
+    displayScores();
+
+    // Refresh game with new questions
     displayQuestions();
 
 });
-
-    
 
     newPlayerButton.addEventListener("click", (event) => {
 
