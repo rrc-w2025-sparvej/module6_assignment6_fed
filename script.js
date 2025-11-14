@@ -32,7 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
             // Hide the username input and show the new player button
             usernameInput.classList.add("hidden");
             newPlayerButton.classList.remove("hidden");
-        } else {
+        }
+        else {
             // Show the username field and hide the new player button
             usernameInput.classList.remove("hidden");
             newPlayerButton.classList.add("hidden");
@@ -48,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
      * Fetches trivia questions from the API and displays them.
      */
     async function fetchQuestions() {
-        showLoading(true); // Show loading state
+        showLoading(true);  
         try {
             const response = await fetch("https://opentdb.com/api.php?amount=10&type=multiple")
             if (!response.ok) {
@@ -214,6 +215,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     newPlayerButton.addEventListener("click", (event) => {
 
+
+    // Delete username cookie by setting expiry to past
+    setCookie("username", "", -1);
+
+    // Show username input field again
+    document.getElementById("username").classList.remove("hidden");
+
+    // Hide new player button
+    newPlayerButton.classList.add("hidden");
+
+    document.getElementById("username").value = "";
+
+    checkUsername();
     })
 
 
